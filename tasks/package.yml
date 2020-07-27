@@ -1,0 +1,12 @@
+---
+- name: Check package
+  package:
+    name: "{{ assert_package.name }}"
+    state: "{{ 'present' if assert_package.is_installed | default(true) else 'absent' }}"
+  check_mode: true
+  register: result
+- name: Assert package
+  assert:
+    that: result is not changed
+    success_msg: "パッケージ「{{ assert_package.name }}」はインストール{{ 'されています' if assert_package.is_installed | default(true) else 'されていません' }}"
+    fail_msg: "パッケージ「{{ assert_package.name }}」がインストール{{ 'されていません' if assert_package.is_installed | default(true) else 'されています' }}"

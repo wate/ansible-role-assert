@@ -1,0 +1,25 @@
+---
+assert_package:
+  name: sudo
+  ### Option
+  ## default: true
+  # is_installed: true
+
+assert_group:
+  name: root
+  ### Option
+  ## default: true
+  # exist: true
+
+assert_user:
+  name: root
+  ## Option
+  # exist: true
+
+assert_service:
+  name: httpd
+  ### Option
+  ## default: true
+  # is_running: true
+  ## default: null
+  # is_enabled: null

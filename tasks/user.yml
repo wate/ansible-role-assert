@@ -1,0 +1,12 @@
+---
+- name: Check user
+  user:
+    name: "{{ assert_user.name }}"
+    state: "{{ 'present' if assert_user.exist | default(true) else 'absent' }}"
+  check_mode: true
+  register: result
+- name: Assert user
+  assert:
+    that: result is not changed
+    success_msg: "ユーザー「{{ assert_user.name }}」は存在{{ 'します' if assert_user.exist | default(true) else 'しません' }}"
+    fail_msg: "ユーザー「{{ assert_user.name }}」が存在{{ 'しません' if assert_user.exist | default(true) else 'します' }}"

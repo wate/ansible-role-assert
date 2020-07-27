@@ -1,0 +1,12 @@
+---
+- name: Check group
+  group:
+    name: "{{ assert_group.name }}"
+    state: "{{ 'present' if assert_group.exist | default(true) else 'absent' }}"
+  check_mode: true
+  register: result
+- name: Assert group
+  assert:
+    that: result is not changed
+    success_msg: "グループ「{{ assert_group.name }}」は存在{{ 'します' if assert_group.exist | default(true) else 'しません' }}"
+    fail_msg: "グループ「{{ assert_group.name }}」が存在{{ 'しません' if assert_group.exist | default(true) else 'します' }}"
