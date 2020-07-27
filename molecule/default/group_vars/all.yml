@@ -6,3 +6,15 @@ web_server:
 database_server:
   package: mariadb-server
   service: mariadb
+
+test_files:
+  - path:  /opt/assert_file
+    state: touch
+  - path:  /opt/assert_directory
+    state: directory
+  - path:  /opt/assert_link
+    state: link
+    src: /usr/local/bin
+
+    
+

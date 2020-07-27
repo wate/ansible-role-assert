@@ -17,6 +17,12 @@
       loop:
         - "{{ web_server.service }}"
         - "{{ database_server.service }}"
+    - name: create test files
+      file:
+        path: "{{ item.path }}"
+        state: "{{ item.state }}"
+        src: "{{ item.src if item.state == 'link' else omit }}"
+      loop: "{{ test_files }}"
     - name: assert package
       include_role:
         name: assert
@@ -34,8 +40,18 @@
       vars:
         assert_service:
           name: "{{ item }}"
-          is_running: true
-          is_enabled: true
       loop:
         - "{{ web_server.service }}"
         - "{{ database_server.service }}"
+    - name: assert file
+      include_role:
+        name: assert
+        tasks_from: file
+      vars:
+        assert_file:
+          path: "{{ item.path }}"
+          is_dir: "{{ true if item.state == 'directory' else false }}"
+          is_file: "{{ true if item.state == 'touch' else false }}"
+          is_symlink: "{{ true if item.state == 'link' else false }}"
+          linked_to: "{{ item.src if item.state == 'link' else omit }}"
+      loop: "{{ test_files }}"
