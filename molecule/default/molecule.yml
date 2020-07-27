@@ -27,28 +27,6 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
     pre_build_image: true
-  - name: bionic
-    groups:
-      - family_debian
-    children:
-      - ubuntu
-    image: "geerlingguy/docker-ubuntu1804-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    pre_build_image: true
-  - name: xenial
-    groups:
-      - family_debian
-    children:
-      - ubuntu
-    image: "geerlingguy/docker-ubuntu1604-ansible:latest"
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    pre_build_image: true
   - name: centos8
     groups:
       - family_redhat

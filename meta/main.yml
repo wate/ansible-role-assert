@@ -13,8 +13,4 @@ galaxy_info:
       versions:
         - bustor
         - stretch
-    - name: Ubuntu
-      versions:
-        - bionic
-        - xenial
 dependencies: []

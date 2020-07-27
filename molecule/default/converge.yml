@@ -3,5 +3,39 @@
   hosts: all
   gather_facts: true
   become: true
-  roles:
-    - role: assert
+  tasks:
+    - name: install test packages
+      package:
+        name:
+          - "{{ web_server.package }}"
+          - "{{ database_server.package }}"
+    - name: set service status
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - "{{ web_server.service }}"
+        - "{{ database_server.service }}"
+    - name: assert package
+      include_role:
+        name: assert
+        tasks_from: package
+      vars:
+        assert_package:
+          name: "{{ item }}"
+      loop:
+        - "{{ web_server.package }}"
+        - "{{ database_server.package }}"
+    - name: assert service
+      include_role:
+        name: assert
+        tasks_from: service
+      vars:
+        assert_service:
+          name: "{{ item }}"
+          is_running: true
+          is_enabled: true
+      loop:
+        - "{{ web_server.service }}"
+        - "{{ database_server.service }}"

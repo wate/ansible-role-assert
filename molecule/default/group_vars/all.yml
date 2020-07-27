@@ -1,0 +1,8 @@
+---
+web_server:
+  package: nginx
+  service: nginx
+
+database_server:
+  package: mariadb-server
+  service: mariadb
