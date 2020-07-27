@@ -50,7 +50,7 @@
         that: result.stat.isdir == assert_file.is_dir
         success_msg: "{{ assert_file.path }}のリンク先は{{ assert_file.linked_to }}です"
         fail_msg: "{{ assert_file.path }}のリンク先は{{ assert_file.linked_to }}ではありません"
-      when: 
+      when:
         - assert_file.is_symlink
         - assert_file.linked_to is defined
   when: assert_file.is_symlink is defined

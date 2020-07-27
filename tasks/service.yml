@@ -12,10 +12,10 @@
     fail_msg: "サービス「{{ assert_service.name }}」が稼働して{{ 'いません' if assert_service.is_running | default(true) else 'しています' }}"
 - name: Check service enabled
   block:
-    - name: 
+    - name: Check service enabled
       service:
         name: "{{ assert_service.name }}"
-        enabled: "{{ assert_service.is_enabled}}"
+        enabled: "{{ assert_service.is_enabled }}"
       check_mode: true
       register: result
     - name: Assert service
