@@ -43,6 +43,16 @@
       loop:
         - "{{ web_server.service }}"
         - "{{ database_server.service }}"
+    - name: assert port
+      include_role:
+        name: assert
+        tasks_from: port
+      vars:
+        assert_port:
+          port: "{{ item }}"
+      loop:
+        - "{{ web_server.port }}"
+        - "{{ database_server.port }}"
     - name: assert file
       include_role:
         name: assert

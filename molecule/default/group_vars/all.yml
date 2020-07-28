@@ -2,10 +2,12 @@
 web_server:
   package: nginx
   service: nginx
+  port: 80
 
 database_server:
   package: mariadb-server
   service: mariadb
+  port: 3306
 
 test_files:
   - path:  /opt/assert_file

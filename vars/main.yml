@@ -1,0 +1,23 @@
+---
+assert_ss_command_optionss:
+  tcp: -tnl4
+    # - --tcp
+    # - --numeric
+    # - --listening
+    # - --ipv4
+  tcp6: -tnl6
+    # - --tcp
+    # - --numeric
+    # - --listening
+    # - --ipv6
+  udp: -unl4
+    # - --udp
+    # - --numeric
+    # - --listening
+    # - --ipv4
+  udp6: -unl6
+    # - --udp
+    # - --numeric
+    # - --listening
+    # - --ipv6
+

@@ -1,0 +1,15 @@
+---
+- name: set command options
+  set_fact:
+    ss_command_option: "{{ assert_ss_command_optionss[assert_port.protocol] if assert_port.protocol is defined and assert_ss_command_optionss[assert_port.protocol] else '-tunl' }}"
+- name: execute ss command
+  shell: ss  {{ ss_command_option | default('-tunl') }} | grep -E -- :{{ assert_port.port }}
+  changed_when: false
+  failed_when: result.rc > 1
+  register: result
+- name: Assert port listen
+  assert:
+    that: (assert_port.is_listening | default(true) and result.rc == 0) or (not assert_port.is_listening | default(true) and result.rc == 1)
+    success_msg: "ポート「{{ assert_port.port }}」はLISTEN{{ 'されています' if assert_port.is_listening | default(true) else 'されていません' }}"
+    fail_msg: "ポート「{{ assert_port.port }}」がLISTEN{{ 'されていません' if assert_port.is_listening | default(true) else 'されています' }}"
+

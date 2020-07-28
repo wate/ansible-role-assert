@@ -1,25 +1,34 @@
 ---
 assert_package:
   name: sudo
-  ### Option
-  ## default: true
+  ### Option ###
+  ## values: true / false (default: true)
   # is_installed: true
 
 assert_group:
   name: root
-  ### Option
-  ## default: true
+  ### Option ###
+  ## values: true / false (default: true)
   # exist: true
 
 assert_user:
   name: root
   ## Option
+  ## values: true / false (default: true)
   # exist: true
 
 assert_service:
   name: httpd
-  ### Option
-  ## default: true
+  ### Option ###
+  ## values: true / false (default: true)
   # is_running: true
-  ## default: null
+  ## values: true / false (default: true)
   # is_enabled: null
+
+assert_port:
+  port: 80
+  ### Option ###
+  ## values: true / false (default: true)
+  # is_listening: true
+  ## values: tcp / tcp6 / udp / udp6 (default: null)
+  # protocol: null
