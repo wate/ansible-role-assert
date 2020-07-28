@@ -91,8 +91,8 @@
       vars:
         assert_file:
           path: "{{ item.path }}"
-          is_dir: "{{ true if item.state == 'directory' else false }}"
-          is_file: "{{ true if item.state == 'touch' else false }}"
-          is_symlink: "{{ true if item.state == 'link' else false }}"
+          is_dir: "{{ true if item.state == 'directory' else omit }}"
+          is_file: "{{ true if item.state == 'touch' else omit }}"
+          is_symlink: "{{ true if item.state == 'link' else omit }}"
           linked_to: "{{ item.src if item.state == 'link' else omit }}"
       loop: "{{ test_files }}"
