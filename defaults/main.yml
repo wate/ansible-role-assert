@@ -9,13 +9,13 @@ assert_group:
   name: root
   ### Option ###
   ## values: true / false (default: true)
-  # exist: true
+  # exists: true
 
 assert_user:
   name: root
   ## Option
   ## values: true / false (default: true)
-  # exist: true
+  # exists: true
 
 assert_service:
   name: httpd
@@ -32,3 +32,21 @@ assert_port:
   # is_listening: true
   ## values: tcp / tcp6 / udp / udp6 (default: null)
   # protocol: null
+
+assert_file:
+  path: /root
+  ### Option ###
+  ## values: true / false (default: true)
+  # exists: true
+  ## values: true / false (default: null)
+  # is_dir: null
+  ## values: true / false (default: null)
+  # is_file: null
+  ## values: true / false (default: null)
+  # is_symlink: null
+  ## values: "0755" (default: null)
+  # mode: null
+  ## values: "root" (default: null)
+  # owner: null
+  ## values: "root" (default: null)
+  # group: null
