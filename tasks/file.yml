@@ -5,9 +5,10 @@
   register: result
 - name: Assert file exists
   assert:
-    that: result.stat.exists == assert_file.exists | default(true)
-    success_msg: "パス「{{ assert_file.path }}」は存在{{ 'します' if assert_file.exists | default(true) else 'しません' }}"
-    fail_msg: "パス「{{ assert_file.path }}」が存在{{ 'しません' if assert_file.exists | default(true) else 'します' }}"
+    that: result.stat.exists == assert_file.exists
+    success_msg: "パス「{{ assert_file.path }}」は存在{{ 'します' if assert_file.exists else 'しません' }}"
+    fail_msg: "パス「{{ assert_file.path }}」が存在{{ 'しません' if assert_file.exists  else 'します' }}"
+  when: assert_file.exists is boolean
 - name: Assert file type(regular file)
   assert:
     that: result.stat.isreg == assert_file.is_file

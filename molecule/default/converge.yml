@@ -91,6 +91,7 @@
       vars:
         assert_file:
           path: "{{ item.path }}"
+          exists: true
           is_dir: "{{ true if item.state == 'directory' else omit }}"
           is_file: "{{ true if item.state == 'touch' else omit }}"
           is_symlink: "{{ true if item.state == 'link' else omit }}"
