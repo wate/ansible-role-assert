@@ -2,8 +2,9 @@
 - name: set command options
   set_fact:
     ss_command_option: "{{ assert_ss_command_optionss[assert_port.protocol] if assert_port.protocol is defined and assert_ss_command_optionss[assert_port.protocol] else '-tunl' }}"
+    grep_command_pattern: ":{{ assert_port.port }}"
 - name: execute ss command
-  shell: ss  {{ ss_command_option | default('-tunl') }} | grep -E -- :{{ assert_port.port }}
+  shell: ss {{ ss_command_option | default('-tunl') }} | grep -E -- {{ grep_command_pattern }}
   changed_when: false
   failed_when: result.rc > 1
   register: result

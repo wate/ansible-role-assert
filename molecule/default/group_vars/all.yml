@@ -17,6 +17,22 @@ test_files:
   - path:  /opt/assert_link
     state: link
     src: /usr/local/bin
-
     
+test_groups:
+  - name: web_user
+  - name: mail_user
 
+test_users:
+  - name: example.com
+    groups:
+      - web_user
+      - mail_user
+  - name: yamada
+    groups: 
+      - mail_user
+  - name: suzuki
+    groups: 
+      - mail_user
+  - name: tanaka
+    groups: 
+      - mail_user

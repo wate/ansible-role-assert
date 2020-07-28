@@ -17,11 +17,26 @@
       loop:
         - "{{ web_server.service }}"
         - "{{ database_server.service }}"
+    - name: add group
+      group:
+        name: "{{ item.name }}"
+      loop: "{{ test_groups }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: add user
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+      loop: "{{ test_users }}"
+      loop_control:
+        label: "{{ item.name }}"
     - name: create test files
       file:
         path: "{{ item.path }}"
         state: "{{ item.state }}"
         src: "{{ item.src if item.state == 'link' else omit }}"
+        modification_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
+        access_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
       loop: "{{ test_files }}"
     - name: assert package
       include_role:
@@ -53,6 +68,22 @@
       loop:
         - "{{ web_server.port }}"
         - "{{ database_server.port }}"
+    - name: assert group
+      include_role:
+        name: assert
+        tasks_from: group
+      vars:
+        assert_group:
+          name: "{{ item.name }}"
+      loop: "{{ test_groups }}"
+    - name: assert user
+      include_role:
+        name: assert
+        tasks_from: user
+      vars:
+        assert_user:
+          name: "{{ item.name }}"
+      loop: "{{ test_users }}"
     - name: assert file
       include_role:
         name: assert
