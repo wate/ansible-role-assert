@@ -13,4 +13,3 @@
     that: (assert_port.is_listening | default(true) and result.rc == 0) or (not assert_port.is_listening | default(true) and result.rc == 1)
     success_msg: "ポート「{{ assert_port.port }}」はLISTEN{{ 'されています' if assert_port.is_listening | default(true) else 'されていません' }}"
     fail_msg: "ポート「{{ assert_port.port }}」がLISTEN{{ 'されていません' if assert_port.is_listening | default(true) else 'されています' }}"
-

@@ -20,4 +20,3 @@ assert_ss_command_optionss:
     # - --numeric
     # - --listening
     # - --ipv6
-
