@@ -3,28 +3,84 @@ assert
 
 A brief description of the role goes here.
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
 Role Variables
 --------------
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
 
 ```yml
 - hosts: servers
-  roles:
-     - role: assert
+  tasks:
+    - name: assert packages
+      include_role:
+        name: assert
+        tasks_from: package
+      vars:
+        assert_package:
+          name: "{{ item }}"
+      loop:
+        - httpd
+        - mariadb-server
+    - name: assert service
+      include_role:
+        name: assert
+        tasks_from: service
+      vars:
+        assert_service:
+          name: "{{ item }}"
+      loop:
+        - httpd
+        - mariadb
+    - name: assert port
+      include_role:
+        name: assert
+        tasks_from: port
+      vars:
+        assert_port:
+          port: "{{ item }}"
+      loop:
+        - 80
+        - 3306
+    - name: assert user
+      include_role:
+        name: assert
+        tasks_from: user
+      vars:
+        assert_user:
+          name: "{{ item }}"
+      loop:
+        - foo_user
+        - bar_user
+    - name: assert group
+      include_role:
+        name: assert
+        tasks_from: user
+      vars:
+        assert_group:
+          name: "{{ item }}"
+      loop:
+        - foo_group
+        - bar_group
+    - name: assert file
+      include_role:
+        name: assert
+        tasks_from: file
+      vars:
+        assert_file:
+          path: "{{ item.path }}"
+          exists: "{{ item.exists }}"
+          is_dir: "{{ item.is_dir | default(None) }}"
+          is_file: "{{ item.is_file | default(None) }}"
+      loop:
+        - path: /opt/custom
+          exists: true
+          is_dir: true
+        - path: /etc/custom/config.ini
+          exists: true
+          is_file: true
 ```
 
 License
