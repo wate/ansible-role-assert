@@ -1,18 +1,17 @@
----
 language: python
 services: docker
 env:
   global:
-    - ROLE_NAME: assert
+  - ROLE_NAME: assert
 install:
-  - pip install molecule yamllint ansible-lint docker
+- pip install molecule yamllint ansible-lint docker
 before_script:
-  - cd ../
-  - mv ansible-role-$ROLE_NAME $ROLE_NAME
-  - cd $ROLE_NAME
+- cd ../
+- mv ansible-role-$ROLE_NAME $ROLE_NAME
+- cd $ROLE_NAME
 script:
-  - molecule test
+- molecule test
 notifications:
   email: false
   slack:
-    secure: "execute `travis encrypt "<slack_name>:<token>" --add notifications.slack -x --no-interactive`"
+    secure: C31hKIEYUtVaBQcgoeTLPQLLu1qEx7e6skISzVY262erKgyWuVvavdj1A7rKb85Dq44wWwYkekLjBe78CTaL5GTyoxO9z4LmLBRuFpP2Y9dGxAZWamU/EY3PxphoR/ttp8lmzrYUiPpXppqq1QpWB+rL99WQgbMbuyufOG+FE0saOt07oRo95lo0XH1LFy0QLX8oGP1evrd58Rd2dJI/v+QgrhHj5awtu0AQG97BVx/mTTre7UfwSHmem6W7kxoaDvcVHDurJPJNaW3lXg4NBOJ2IimkReS5H2xWmwm/+B/EhvOcVhqansqgEgMmVdSSJee9W2s6Ev1IsonVC5l1p68PaiYSFPgfM4n78bTpr9cxk32ur3UpxETOFV0b3eAkgEtIJ+RFj+giBgKpD8lazqp/EYluHPiqXtxsjVopCBcMHgouuQcsYMlit0E96vEo7Bc8Xog4i9IzRXQOYfeLuvbVXpCbMu4Dpa8lAunmiN6w8oUq6GcxOh3vPc2DeoffG/5mwNjpMcrnpjomdSCakJll9sFA25ra8aBT85KzShK4FnVkRkYz84lrBtbLx3kifPu5sxr9U7cGC1fVTtCl33Jj5ZZSOrJTUZbENg1YfZ5yLd2OqJQdiIQzMuTEJfo3oF9nwP0PBituw96AGvz/i6ah1vbYyZWi21bLSANnm3k=
