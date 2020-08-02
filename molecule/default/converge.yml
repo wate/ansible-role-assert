@@ -4,71 +4,7 @@
   gather_facts: true
   become: true
   tasks:
-    - name: install test packages
-      package:
-        name:
-          - "{{ web_server.package }}"
-          - "{{ database_server.package }}"
-    - name: set service status
-      service:
-        name: "{{ item }}"
-        state: started
-        enabled: true
-      loop:
-        - "{{ web_server.service }}"
-        - "{{ database_server.service }}"
-    - name: add group
-      group:
-        name: "{{ item.name }}"
-      loop: "{{ test_groups }}"
-      loop_control:
-        label: "{{ item.name }}"
-    - name: add user
-      user:
-        name: "{{ item.name }}"
-        groups: "{{ item.groups }}"
-      loop: "{{ test_users }}"
-      loop_control:
-        label: "{{ item.name }}"
-    - name: create test files
-      file:
-        path: "{{ item.path }}"
-        state: "{{ item.state }}"
-        src: "{{ item.src if item.state == 'link' else omit }}"
-        modification_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
-        access_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
-      loop: "{{ test_files }}"
-    - name: assert package
-      include_role:
-        name: assert
-        tasks_from: package
-      vars:
-        assert_package:
-          name: "{{ item }}"
-      loop:
-        - "{{ web_server.package }}"
-        - "{{ database_server.package }}"
-    - name: assert service
-      include_role:
-        name: assert
-        tasks_from: service
-      vars:
-        assert_service:
-          name: "{{ item }}"
-      loop:
-        - "{{ web_server.service }}"
-        - "{{ database_server.service }}"
-    - name: assert port
-      include_role:
-        name: assert
-        tasks_from: port
-      vars:
-        assert_port:
-          port: "{{ item }}"
-      loop:
-        - "{{ web_server.port }}"
-        - "{{ database_server.port }}"
-    - name: assert group
+    - name: assert groups
       include_role:
         name: assert
         tasks_from: group
@@ -76,7 +12,7 @@
         assert_group:
           name: "{{ item.name }}"
       loop: "{{ test_groups }}"
-    - name: assert user
+    - name: assert users
       include_role:
         name: assert
         tasks_from: user
@@ -84,7 +20,7 @@
         assert_user:
           name: "{{ item.name }}"
       loop: "{{ test_users }}"
-    - name: assert file
+    - name: assert files
       include_role:
         name: assert
         tasks_from: file
@@ -97,3 +33,33 @@
           is_symlink: "{{ true if item.state == 'link' else omit }}"
           linked_to: "{{ item.src if item.state == 'link' else omit }}"
       loop: "{{ test_files }}"
+    - name: assert packages
+      include_role:
+        name: assert
+        tasks_from: package
+      vars:
+        assert_package:
+          name: "{{ item }}"
+      loop:
+        - "{{ web_server.package }}"
+        - "{{ database_server.package }}"
+    - name: assert services
+      include_role:
+        name: assert
+        tasks_from: service
+      vars:
+        assert_service:
+          name: "{{ item }}"
+      loop:
+        - "{{ web_server.service }}"
+        - "{{ database_server.service }}"
+    - name: assert ports
+      include_role:
+        name: assert
+        tasks_from: port
+      vars:
+        assert_port:
+          port: "{{ item }}"
+      loop:
+        - "{{ web_server.port }}"
+        - "{{ database_server.port }}"

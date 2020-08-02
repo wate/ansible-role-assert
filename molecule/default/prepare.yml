@@ -1,0 +1,40 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: add group
+      group:
+        name: "{{ item.name }}"
+      loop: "{{ test_groups }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: add user
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups }}"
+      loop: "{{ test_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: create test files
+      file:
+        path: "{{ item.path }}"
+        state: "{{ item.state }}"
+        src: "{{ item.src if item.state == 'link' else omit }}"
+        modification_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
+        access_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
+      loop: "{{ test_files }}"
+    - name: install packages
+      package:
+        name:
+          - "{{ web_server.package }}"
+          - "{{ database_server.package }}"
+    - name: set service status
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - "{{ web_server.service }}"
+        - "{{ database_server.service }}"
