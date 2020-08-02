@@ -5,27 +5,22 @@
     state: "{{ 'started' if assert_service.is_running | default(true) else 'stopped' }}"
   check_mode: true
   register: result
-- block:
+- name: Assert service
+  assert:
+    that: result is not changed
+    success_msg: "サービス「{{ assert_service.name }}」は稼働して{{ 'います' if assert_service.is_running | default(true) else 'いません' }}"
+    fail_msg: "サービス「{{ assert_service.name }}」が稼働して{{ 'いません' if assert_service.is_running | default(true) else 'しています' }}"
+- name: Check service enabled
+  block:
+    - name: Check service enabled
+      service:
+        name: "{{ assert_service.name }}"
+        enabled: "{{ assert_service.is_enabled }}"
+      check_mode: true
+      register: result
     - name: Assert service
       assert:
         that: result is not changed
-        success_msg: "サービス「{{ assert_service.name }}」は稼働して{{ 'います' if assert_service.is_running | default(true) else 'いません' }}"
-        fail_msg: "サービス「{{ assert_service.name }}」が稼働して{{ 'いません' if assert_service.is_running | default(true) else 'しています' }}"
-    - name: Check service enabled
-      block:
-        - name: Check service enabled
-          service:
-            name: "{{ assert_service.name }}"
-            enabled: "{{ assert_service.is_enabled }}"
-          check_mode: true
-          register: result
-        - name: Assert service
-          assert:
-            that: result is not changed
-            success_msg: "サービス「{{ assert_service.name }}」は{{ '有効化されています' if assert_service.is_enabled | default(true) else '無効化されています' }}"
-            fail_msg: "サービス「{{ assert_service.name }}」が{{ '無効化されています' if assert_service.is_enabled | default(true) else '有効化されています' }}"
-      when: assert_service.is_enabled is defined
-  rescue:
-    - name: display error message
-      debug:
-        msg: Assert service failed
+        success_msg: "サービス「{{ assert_service.name }}」は{{ '有効化されています' if assert_service.is_enabled | default(true) else '無効化されています' }}"
+        fail_msg: "サービス「{{ assert_service.name }}」が{{ '無効化されています' if assert_service.is_enabled | default(true) else '有効化されています' }}"
+  when: assert_service.is_enabled is defined
