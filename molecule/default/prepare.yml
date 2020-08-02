@@ -17,14 +17,14 @@
       loop: "{{ test_users }}"
       loop_control:
         label: "{{ item.name }}"
-    - name: create test files
-      file:
-        path: "{{ item.path }}"
-        state: "{{ item.state }}"
-        src: "{{ item.src if item.state == 'link' else omit }}"
-        modification_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
-        access_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
-      loop: "{{ test_files }}"
+    # - name: create test files
+    #   file:
+    #     path: "{{ item.path }}"
+    #     state: "{{ item.state }}"
+    #     src: "{{ item.src if item.state == 'link' else omit }}"
+    #     modification_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
+    #     access_time: "{{ 'preserve' if item.state == 'touch' else omit }}"
+    #   loop: "{{ test_files }}"
     - name: install packages
       package:
         name:
