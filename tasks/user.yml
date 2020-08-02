@@ -5,8 +5,13 @@
     state: "{{ 'present' if assert_user.exists | default(true) else 'absent' }}"
   check_mode: true
   register: result
-- name: Assert user
-  assert:
-    that: result is not changed
-    success_msg: "ユーザー「{{ assert_user.name }}」は存在{{ 'します' if assert_user.exists | default(true) else 'しません' }}"
-    fail_msg: "ユーザー「{{ assert_user.name }}」が存在{{ 'しません' if assert_user.exists | default(true) else 'します' }}"
+- block:
+    - name: Assert user
+      assert:
+        that: result is not changed
+        success_msg: "ユーザー「{{ assert_user.name }}」は存在{{ 'します' if assert_user.exists | default(true) else 'しません' }}"
+        fail_msg: "ユーザー「{{ assert_user.name }}」が存在{{ 'しません' if assert_user.exists | default(true) else 'します' }}"
+  rescue:
+    - name: display error message
+      debug:
+        msg: Assert user failed

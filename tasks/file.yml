@@ -3,55 +3,60 @@
   stat:
     path: "{{ assert_file.path }}"
   register: result
-- name: Assert file exists
-  assert:
-    that: result.stat.exists == assert_file.exists
-    success_msg: "パス「{{ assert_file.path }}」は存在{{ 'します' if assert_file.exists else 'しません' }}"
-    fail_msg: "パス「{{ assert_file.path }}」が存在{{ 'しません' if assert_file.exists  else 'します' }}"
-  when: assert_file.exists is boolean
-- name: Assert file type(regular file)
-  assert:
-    that: result.stat.isreg == assert_file.is_file
-    success_msg: "パス「{{ assert_file.path }}」はファイル{{ 'です' if assert_file.is_file else 'ではありません' }}"
-    fail_msg: "パス「{{ assert_file.path }}」はファイル{{ 'ではありません' if assert_file.is_file else 'です' }}"
-  when: assert_file.is_file is boolean
-- name: Assert file type(directory)
-  assert:
-    that: result.stat.isdir == assert_file.is_dir
-    success_msg: "パス「{{ assert_file.path }}」はディレクトリ{{ 'です' if assert_file.is_dir else 'ではありません' }}"
-    fail_msg: "パス「{{ assert_file.path }}」はディレクトリ{{ 'ではありません' if assert_file.is_dir else 'です' }}"
-  when: assert_file.is_dir is boolean
-- name: Assert Assert file type(symbolic link)
-  block:
-    - name: Assert symbolic link
+- block:
+    - name: Assert file exists
       assert:
-        that: result.stat.islnk == assert_file.is_symlink
-        success_msg: "パス「{{ assert_file.path }}」はシンボリックリンク{{ 'です' if assert_file.is_symlink else 'ではありません' }}"
-        fail_msg: "パス「{{ assert_file.path }}」はシンボリックリンク{{ 'ではありません' if assert_file.is_symlink else 'です' }}"
-    - name: Assert link target
+        that: result.stat.exists == assert_file.exists
+        success_msg: "パス「{{ assert_file.path }}」は存在{{ 'します' if assert_file.exists else 'しません' }}"
+        fail_msg: "パス「{{ assert_file.path }}」が存在{{ 'しません' if assert_file.exists  else 'します' }}"
+      when: assert_file.exists is boolean
+    - name: Assert file type(regular file)
       assert:
-        that: result.stat.lnk_target == assert_file.linked_to
-        success_msg: "パス「{{ assert_file.path }}」のリンク先は「{{ assert_file.linked_to }}」です"
-        fail_msg: "パス「{{ assert_file.path }}」のリンク先は「{{ assert_file.linked_to }}」ではありません"
-      when:
-        - assert_file.is_symlink
-        - assert_file.linked_to is string
-  when: assert_file.is_symlink is boolean
-- name: Assert file permission
-  assert:
-    that: result.stat.mode == assert_file.mode
-    success_msg: "パス「{{ assert_file.path }}」のアクセス権は{{ assert_file.mode }}です"
-    fail_msg: "パス「{{ assert_file.path }}」のアクセス権は{{ assert_file.mode }}ではありません"
-  when: assert_file.mode is string
-- name: Assert file owner
-  assert:
-    that: result.stat.pw_name == assert_file.owner
-    success_msg: "パス「{{ assert_file.path }}」のオーナーは{{ assert_file.owner }}です"
-    fail_msg: "パス「{{ assert_file.path }}」のオーナーは{{ assert_file.owner }}ではありません"
-  when: assert_file.owner is string
-- name: Assert file group
-  assert:
-    that: result.stat.gr_name == assert_file.group
-    success_msg: "パス「{{ assert_file.path }}」のグループは{{ assert_file.group }}です"
-    fail_msg: "パス「{{ assert_file.path }}」のグループは{{ assert_file.group }}ではありません"
-  when: assert_file.group is string
+        that: result.stat.isreg == assert_file.is_file
+        success_msg: "パス「{{ assert_file.path }}」はファイル{{ 'です' if assert_file.is_file else 'ではありません' }}"
+        fail_msg: "パス「{{ assert_file.path }}」はファイル{{ 'ではありません' if assert_file.is_file else 'です' }}"
+      when: assert_file.is_file is boolean
+    - name: Assert file type(directory)
+      assert:
+        that: result.stat.isdir == assert_file.is_dir
+        success_msg: "パス「{{ assert_file.path }}」はディレクトリ{{ 'です' if assert_file.is_dir else 'ではありません' }}"
+        fail_msg: "パス「{{ assert_file.path }}」はディレクトリ{{ 'ではありません' if assert_file.is_dir else 'です' }}"
+      when: assert_file.is_dir is boolean
+    - name: Assert Assert file type(symbolic link)
+      block:
+        - name: Assert symbolic link
+          assert:
+            that: result.stat.islnk == assert_file.is_symlink
+            success_msg: "パス「{{ assert_file.path }}」はシンボリックリンク{{ 'です' if assert_file.is_symlink else 'ではありません' }}"
+            fail_msg: "パス「{{ assert_file.path }}」はシンボリックリンク{{ 'ではありません' if assert_file.is_symlink else 'です' }}"
+        - name: Assert link target
+          assert:
+            that: result.stat.lnk_target == assert_file.linked_to
+            success_msg: "パス「{{ assert_file.path }}」のリンク先は「{{ assert_file.linked_to }}」です"
+            fail_msg: "パス「{{ assert_file.path }}」のリンク先は「{{ assert_file.linked_to }}」ではありません"
+          when:
+            - assert_file.is_symlink
+            - assert_file.linked_to is string
+      when: assert_file.is_symlink is boolean
+    - name: Assert file permission
+      assert:
+        that: result.stat.mode == assert_file.mode
+        success_msg: "パス「{{ assert_file.path }}」のアクセス権は{{ assert_file.mode }}です"
+        fail_msg: "パス「{{ assert_file.path }}」のアクセス権は{{ assert_file.mode }}ではありません"
+      when: assert_file.mode is string
+    - name: Assert file owner
+      assert:
+        that: result.stat.pw_name == assert_file.owner
+        success_msg: "パス「{{ assert_file.path }}」のオーナーは{{ assert_file.owner }}です"
+        fail_msg: "パス「{{ assert_file.path }}」のオーナーは{{ assert_file.owner }}ではありません"
+      when: assert_file.owner is string
+    - name: Assert file group
+      assert:
+        that: result.stat.gr_name == assert_file.group
+        success_msg: "パス「{{ assert_file.path }}」のグループは{{ assert_file.group }}です"
+        fail_msg: "パス「{{ assert_file.path }}」のグループは{{ assert_file.group }}ではありません"
+      when: assert_file.group is string
+  rescue:
+    - name: display error message
+      debug:
+        msg: Assert file failed
