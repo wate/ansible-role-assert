@@ -1,7 +1,9 @@
 assert
 =========
 
-A brief description of the role goes here.
+[![Build Status](https://travis-ci.org/wate/ansible-role-assert.svg?branch=master)](https://travis-ci.org/wate/ansible-role-assert)
+
+assertモジュールを利用した検証を行いやすくします。
 
 Role Variables
 --------------

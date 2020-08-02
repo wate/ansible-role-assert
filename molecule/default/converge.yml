@@ -50,6 +50,8 @@
       vars:
         assert_service:
           name: "{{ item }}"
+          is_running: true
+          is_enabled: true
       loop:
         - "{{ web_server.service }}"
         - "{{ database_server.service }}"
